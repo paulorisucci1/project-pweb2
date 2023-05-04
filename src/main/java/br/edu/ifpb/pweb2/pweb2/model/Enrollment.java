@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -28,11 +29,11 @@ public class Enrollment {
     @Size(max = 255, message = "The note must have a maximum of 255 characters")
     private String note;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Student student;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @NotNull(message = "The academic term must be informed")
+    @ManyToOne
+    @NotNull(message = "The academic term must be provided. If there are no academic terms available, please register one for your institution")
     private AcademicTerm academicTerm;
 
     public void update(Enrollment enrollment) {
@@ -47,8 +48,6 @@ public class Enrollment {
                 "idEnrollment=" + idEnrollment +
                 ", receiptDate=" + receiptDate +
                 ", note='" + note + '\'' +
-                ", student=" + student.getRegistration() +
-                ", academicTerm=" + academicTerm.getCode() +
                 '}';
     }
 }

@@ -21,8 +21,6 @@ public class InstitutionController {
 
     private InstitutionService institutionService;
 
-    private AcademicTermService academicTermService;
-
     @GetMapping(FORM)
     public ModelAndView getForm(ModelAndView modelAndView, Institution institution) {
         modelAndView.setViewName("institutions/form");

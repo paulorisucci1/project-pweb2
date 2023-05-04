@@ -2,6 +2,7 @@ package br.edu.ifpb.pweb2.pweb2.controller;
 
 import br.edu.ifpb.pweb2.pweb2.model.Institution;
 import br.edu.ifpb.pweb2.pweb2.model.Student;
+import br.edu.ifpb.pweb2.pweb2.service.EnrollmentService;
 import br.edu.ifpb.pweb2.pweb2.service.InstitutionService;
 import br.edu.ifpb.pweb2.pweb2.service.StudentService;
 import jakarta.validation.Valid;

@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer> {
     List<Enrollment> findAllByStudent(Student student);
+
+    List<Enrollment> findAllByAcademicTerm(AcademicTerm academicTerm);
 }

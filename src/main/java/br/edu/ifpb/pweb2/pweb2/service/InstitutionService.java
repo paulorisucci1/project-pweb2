@@ -5,6 +5,7 @@ import br.edu.ifpb.pweb2.pweb2.exceptions.EntityNotFoundException;
 import br.edu.ifpb.pweb2.pweb2.model.AcademicTerm;
 import br.edu.ifpb.pweb2.pweb2.model.Institution;
 import br.edu.ifpb.pweb2.pweb2.repository.InstitutionRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +43,10 @@ public class InstitutionService {
                 .orElseThrow(() -> new EntityNotFoundException("Institution not found"));
     }
 
+    @Transactional
     public void delete(Integer id) {
-        institutionRepository.deleteById(id);
+        final var institution = searchById(id);
+        institutionRepository.delete(institution);
     }
 
     public void addAcademicTermOntoInstitution(AcademicTerm academicTerm, Integer idInstitution) {

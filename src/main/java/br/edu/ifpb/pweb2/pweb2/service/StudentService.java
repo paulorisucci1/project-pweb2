@@ -44,17 +44,15 @@ public class StudentService {
     }
 
     public void delete(Integer id) {
-        studentRepository.deleteById(id);
+        final var student = searchById(id);
+        student.removeAllEnrollments();
+        studentRepository.delete(student);
     }
 
     void verifyIfStudentRegistrationAlreadyExist(Student student) {
         if(studentRepository.existsByNameAndIdStudentNot(student.getName(), student.getIdStudent())) {
             throw new EntityAlreadyExistException("The student already exist.");
         }
-    }
-
-    private Student saveStudent(Student student) {
-        return studentRepository.save(student);
     }
 
     @Transactional
@@ -64,7 +62,14 @@ public class StudentService {
         saveStudent(student);
     }
 
+    @Transactional
     public void removeEnrollmentFromStudent(Enrollment enrollment) {
+        final var student = searchById(enrollment.getStudent().getIdStudent());
+        student.removeEnrollment(enrollment);
+        saveStudent(student);
+    }
 
+    private Student saveStudent(Student student) {
+        return studentRepository.save(student);
     }
 }

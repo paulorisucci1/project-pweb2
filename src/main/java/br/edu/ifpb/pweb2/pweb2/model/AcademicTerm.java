@@ -38,7 +38,7 @@ public class AcademicTerm {
     @NotNull(message = "The endDate must be informed")
     private Date endDate;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     private Institution institution;
 
     public void update(AcademicTerm updatedAcademicTerm) {
