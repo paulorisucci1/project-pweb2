@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:insert="~{layout/layout}"
+      th:with="title='Institution list', leaveLink=@{'/home'}">
+<body>
+    <header class="text-center">
+        <h1>Institutions</h1>
+    </header>
+    <main layout:fragment="content">
+
+        <form th:action="@{/institutions/form}" method="GET">
+            <button class="btn btn-primary" type="submit">New institution</button>
+        </form>
+
+        <table class="table table-striped table-hover">
+            <div th:if="${not #lists.isEmpty(institutionsList)}">
+                <div th:text="'Total of '+${#lists.size(institutionsList)} + ' registers.'" class="text-right"></div>
+            </div>
+            <thead>
+                <tr>
+                    <th>Acronym</th>
+                    <th>Phone Number</th>
+                    <th>Current Academic Term</th>
+                    <th>Operations</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="institution: ${institutionsList}">
+                    <td><a th:text="${institution.acronym}"></a></td>
+                    <td><a th:text="${institution.phone}"></a></td>
+                    <td >
+                        <a th:if="${institution.currentAcademicTerm == null}" th:href="@{*{'/institutions/'+institution.idInstitution+'/academic_terms/form'}}">
+                            <input type="button" value="Add" class="btn btn-secondary"/>
+                        </a>
+                        <a th:if="${institution.currentAcademicTerm != null}"
+                           th:text="${institution.currentAcademicTerm.code}">
+                        </a>
+                    </td>
+                    <td>
+                        <form th:action="@{/institutions/{id}(id=${institution.idInstitution})}" class="operations-form">
+                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        </form>
+                        <form th:action="@{/institutions/{id}(id=${institution.idInstitution})}" th:method="delete" class="operations-form">
+                            <button type="submit" class="btn btn-primary btn-sm">Exclude</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

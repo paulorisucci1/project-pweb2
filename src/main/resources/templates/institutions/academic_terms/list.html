@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:insert="~{layout/layout}"
+      th:with="title='Academic term list', leaveLink=@{${'/institutions/'+idInstitution}}">
+<body>
+<header class="text-center">
+  <h1>Academic Terms</h1>
+</header>
+<main layout:fragment="content">
+
+  <form th:action="@{${'/institutions/'+idInstitution+'/academic_terms/form'}}" method="GET">
+    <button class="btn btn-primary" type="submit">New Academic term</button>
+  </form>
+
+  <table class="table table-striped table-hover">
+    <div th:if="${not #lists.isEmpty(academicTermList)}">
+      <div th:text="'Total of '+${#lists.size(academicTermList)} + ' registers.'" class="text-right"></div>
+    </div>
+    <thead>
+    <tr>
+      <th>Code</th>
+      <th>Year</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="academicTerm: ${academicTermList}">
+      <td><a th:text="${academicTerm.code}"></a></td>
+      <td><a th:text="${academicTerm.year}"></a></td>
+      <td><a th:text="${academicTerm.startDate}"></a></td>
+      <td><a th:text="${academicTerm.endDate}"></a></td>
+      <td>
+        <form th:action="@{${'/institutions/'+idInstitution+'/academic_terms/'+academicTerm.idAcademicTerm}}" th:method="GET">
+          <button type="submit" class="btn btn-rimary btn-sm">Update</button>
+        </form>
+        <form th:action="@{${'/institutions/'+idInstitution+'/academic_terms/'+academicTerm.idAcademicTerm}}" th:method="delete">
+          <button type="submit" class="btn btn-rimary btn-sm">Exclude</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</main>
+</body>
+</html>

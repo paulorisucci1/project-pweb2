@@ -1,0 +1,20 @@
+form {
+    margin-block-end: 1em;
+}
+
+input {
+    display: block;
+}
+
+.submit-form {
+    margin-top: 2em;
+    text-align: center;
+}
+
+.operations-form {
+    margin: .3em;
+}
+
+.subtitle {
+    font-size: 1.3em;
+}

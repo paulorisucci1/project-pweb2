@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:insert="~{layout/layout}"
+      th:with="title='Academic term registry', leaveLink=@{${'/institutions/'+idInstitution}}">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<main layout:fragment="content">
+
+  <form class="form-inline"
+        th:action="@{
+        ${academicTerm.idAcademicTerm != null ? '/institutions/'+idInstitution+'/academic_terms/'+academicTerm.idAcademicTerm :
+         '/institutions/'+idInstitution+'/academic_terms'}}"
+        th:method="${academicTerm.idAcademicTerm != null ? 'put' : 'post'}"
+        th:object="${academicTerm}">
+
+    <input type="hidden" th:field="*{idAcademicTerm}"/>
+
+    <div class="form-group mx-sm-3 mb-2">
+      <label for="code">Code</label>
+      <input type="text" th:field="*{code}" class="form-control mb-2"/>
+      <p th:if="${#fields.hasErrors('code')}" th:errorclass="error" th:errors="*{code}" class="alert alert-danger"></p>
+    </div>
+
+    <div class="form-group mx-sm-3 mb-2">
+      <label for="year">Year</label>
+      <input type="text" th:field="*{year}" class="form-control mb-2"/>
+      <p th:if="${#fields.hasErrors('year')}" th:errorclass="error" th:errors="*{year}" class="alert alert-danger"></p>
+    </div>
+
+    <div class="form-group mx-sm-3 mb-2">
+      <label for="startDate">Start Date</label>
+      <input type="date" th:field="*{startDate}" class="form-control mb-2"/>
+      <p th:if="${#fields.hasErrors('startDate')}" th:errorclass="error" th:errors="*{startDate}" class="alert alert-danger"></p>
+    </div>
+
+    <div class="form-group mx-sm-3 mb-2">
+      <label for="endDate">End Date</label>
+      <input type="date" th:field="*{endDate}" class="form-control mb-2"/>
+      <p th:if="${#fields.hasErrors('endDate')}" th:errorclass="error" th:errors="*{endDate}" class="alert alert-danger"></p>
+    </div>
+
+    <div class="form-group mx-sm-3 mb-2">
+      <input type="submit" value="Save" class="btn btn-primary"/>
+      <a class="btn btn-secondary" th:href="@{${'/institutions'}}">Cancel</a>
+    </div>
+  </form>
+</main>
+</body>
+</html>

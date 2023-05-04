@@ -1,0 +1,26 @@
+<!DOCTYPE html5>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+<head>
+    <meta th:insert="~{/fragments/base :: headfiles(${title})}">
+</head>
+<body>
+
+    <div th:replace="~{/fragments/base :: navmenu(leaveLink=${leaveLink})}"/>
+
+    <div class="container">
+        <div th:text="${message}" th:if="${message ne null}" class="alert alert-success"></div>
+
+        <div class="card">
+            <div class="card-header">
+                <span th:text="${title}">Título do card</span>
+            </div>
+            <div class="card-body">
+                <div layout:fragment="content">
+                    <h1>Conteúdo não definido para o layout!</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

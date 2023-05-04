@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:insert="~{layout/layout}"
+      th:with="title='Enrollment registry', leaveLink=@{'/students/'+idStudent}">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<main layout:fragment="content">
+
+  <form class="form-inline"
+        th:action="@{${enrollment.idEnrollment != null ? '/students/'+idStudent+'/enrollments/'+enrollment.idEnrollment :
+         '/students/'+idStudent+'/enrollments'}}"
+        th:method="${enrollment.idEnrollment != null ? 'put' : 'post'}"
+        th:object="${enrollment}">
+
+    <input type="hidden" th:field="*{idEnrollment}"/>
+
+    <div class="form-group mx-sm-3 mb-2">
+      <label for="receiptDate">Receipt Date</label>
+      <input type="date" th:field="*{receiptDate}" class="form-control mb-2"/>
+      <p th:if="${#fields.hasErrors('receiptDate')}" th:errorclass="error" th:errors="*{receiptDate}" class="alert alert-danger"></p>
+    </div>
+
+    <div class="form-group mx-sm-3 mb-2">
+      <label for="note">Note</label>
+      <input type="text" th:field="*{note}" class="form-control mb-2"/>
+      <p th:if="${#fields.hasErrors('note')}" th:errorclass="error" th:errors="*{note}" class="alert alert-danger"></p>
+    </div>
+
+    <div class="form-group mx-sm-3 mb-2">
+      <label for="academicTerm">Academic Term</label>
+      <select th:field="*{academicTerm.idAcademicTerm}" class="form-select  mb-2">
+        <option th:each="academicTerm : ${academicTermList}" th:value="${academicTerm.idAcademicTerm}" th:text="${academicTerm.code}" />
+      </select>
+      <p th:if="${#fields.hasErrors('academicTerm')}" th:errorclass="error" th:errors="*{academicTerm}" class="alert alert-danger" />
+    </div>
+
+    <div class="form-group mx-sm-3 mb-2">
+      <input type="submit" value="Save" class="btn btn-primary"/>
+      <a class="btn btn-secondary" th:href="@{${'/students/'+idStudent}}">Cancel</a>
+    </div>
+  </form>
+</main>
+</body>
+</html>
