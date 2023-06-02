@@ -1,19 +1,15 @@
-package br.edu.ifpb.pweb2.pweb2.model;
+package br.edu.ifpb.pweb2.pweb2.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
 @Data
 @EqualsAndHashCode(exclude = "institution")
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"year", "semester", "institution_id"}))
 public class AcademicTerm {
 
     @Id
@@ -21,28 +17,23 @@ public class AcademicTerm {
     private Integer idAcademicTerm;
 
     @Column(nullable = false)
-    @NotNull(message = "The year must be informed")
     private Integer year;
 
     @Column(nullable = false)
-    @NotBlank(message = "The code must be informed")
-    private String code;
+    private Integer semester;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
-    @NotNull(message = "The startDate must be informed")
     private Date startDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
-    @NotNull(message = "The endDate must be informed")
     private Date endDate;
 
     @ManyToOne
+    @JoinColumn(name = "institution_id")
     private Institution institution;
 
     public void update(AcademicTerm updatedAcademicTerm) {
-        this.code = updatedAcademicTerm.getCode();
+        this.semester = updatedAcademicTerm.getSemester();
         this.year = updatedAcademicTerm.getYear();
         this.startDate = updatedAcademicTerm.getStartDate();
         this.endDate = updatedAcademicTerm.getEndDate();

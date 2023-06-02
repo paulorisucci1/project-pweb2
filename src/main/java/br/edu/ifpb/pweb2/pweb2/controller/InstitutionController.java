@@ -1,8 +1,7 @@
 package br.edu.ifpb.pweb2.pweb2.controller;
 
-import br.edu.ifpb.pweb2.pweb2.model.Institution;
+import br.edu.ifpb.pweb2.pweb2.model.entity.Institution;
 import br.edu.ifpb.pweb2.pweb2.service.InstitutionService;
-import br.edu.ifpb.pweb2.pweb2.service.AcademicTermService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;

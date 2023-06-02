@@ -17,15 +17,15 @@
     <input type="hidden" th:field="*{idAcademicTerm}"/>
 
     <div class="form-group mx-sm-3 mb-2">
-      <label for="code">Code</label>
-      <input type="text" th:field="*{code}" class="form-control mb-2"/>
-      <p th:if="${#fields.hasErrors('code')}" th:errorclass="error" th:errors="*{code}" class="alert alert-danger"></p>
-    </div>
-
-    <div class="form-group mx-sm-3 mb-2">
       <label for="year">Year</label>
       <input type="text" th:field="*{year}" class="form-control mb-2"/>
       <p th:if="${#fields.hasErrors('year')}" th:errorclass="error" th:errors="*{year}" class="alert alert-danger"></p>
+    </div>
+
+    <div class="form-group mx-sm-3 mb-2">
+      <label for="Semester">Semester</label>
+      <input type="text" th:field="*{semester}" class="form-control mb-2"/>
+      <p th:if="${#fields.hasErrors('semester')}" th:errorclass="error" th:errors="*{semester}" class="alert alert-danger"></p>
     </div>
 
     <div class="form-group mx-sm-3 mb-2">

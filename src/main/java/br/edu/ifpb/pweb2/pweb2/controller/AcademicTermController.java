@@ -1,6 +1,6 @@
 package br.edu.ifpb.pweb2.pweb2.controller;
 
-import br.edu.ifpb.pweb2.pweb2.model.AcademicTerm;
+import br.edu.ifpb.pweb2.pweb2.model.entity.AcademicTerm;
 import br.edu.ifpb.pweb2.pweb2.service.AcademicTermService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

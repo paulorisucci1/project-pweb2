@@ -1,10 +1,11 @@
 package br.edu.ifpb.pweb2.pweb2.controller;
 
-import br.edu.ifpb.pweb2.pweb2.model.Institution;
-import br.edu.ifpb.pweb2.pweb2.model.Student;
-import br.edu.ifpb.pweb2.pweb2.service.EnrollmentService;
+import br.edu.ifpb.pweb2.pweb2.model.entity.Institution;
+import br.edu.ifpb.pweb2.pweb2.model.entity.Student;
+import br.edu.ifpb.pweb2.pweb2.model.dto.StudentDTO;
 import br.edu.ifpb.pweb2.pweb2.service.InstitutionService;
 import br.edu.ifpb.pweb2.pweb2.service.StudentService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static br.edu.ifpb.pweb2.pweb2.config.Paths.FORM;
@@ -21,6 +23,7 @@ import static br.edu.ifpb.pweb2.pweb2.config.Paths.STUDENTS;
 @Controller
 @RequestMapping(STUDENTS)
 @AllArgsConstructor
+@Transactional
 public class StudentController {
 
     private StudentService studentService;

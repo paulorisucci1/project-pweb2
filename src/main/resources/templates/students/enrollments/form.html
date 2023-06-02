@@ -11,7 +11,8 @@
         th:action="@{${enrollment.idEnrollment != null ? '/students/'+idStudent+'/enrollments/'+enrollment.idEnrollment :
          '/students/'+idStudent+'/enrollments'}}"
         th:method="${enrollment.idEnrollment != null ? 'put' : 'post'}"
-        th:object="${enrollment}">
+        th:object="${enrollment}"
+        enctype="multipart/form-data">
 
     <input type="hidden" th:field="*{idEnrollment}"/>
 
@@ -22,9 +23,13 @@
     </div>
 
     <div class="form-group mx-sm-3 mb-2">
-      <label for="note">Note</label>
-      <input type="text" th:field="*{note}" class="form-control mb-2"/>
-      <p th:if="${#fields.hasErrors('note')}" th:errorclass="error" th:errors="*{note}" class="alert alert-danger"></p>
+      <label for="document">Document</label>
+      <input type="file"
+             accept="application/pdf"
+             th:field="*{document}"
+             class="form-control mb-2"
+      />
+      <p th:if="${#fields.hasErrors('document')}" th:errorclass="error" th:errors="*{document}" class="alert alert-danger"></p>
     </div>
 
     <div class="form-group mx-sm-3 mb-2">

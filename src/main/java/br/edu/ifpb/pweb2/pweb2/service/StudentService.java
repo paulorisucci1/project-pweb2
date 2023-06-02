@@ -2,8 +2,8 @@ package br.edu.ifpb.pweb2.pweb2.service;
 
 import br.edu.ifpb.pweb2.pweb2.exceptions.EntityAlreadyExistException;
 import br.edu.ifpb.pweb2.pweb2.exceptions.EntityNotFoundException;
-import br.edu.ifpb.pweb2.pweb2.model.Enrollment;
-import br.edu.ifpb.pweb2.pweb2.model.Student;
+import br.edu.ifpb.pweb2.pweb2.model.entity.Enrollment;
+import br.edu.ifpb.pweb2.pweb2.model.entity.Student;
 import br.edu.ifpb.pweb2.pweb2.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -24,6 +24,7 @@ public class StudentService {
         return saveStudent(newStudent);
     }
 
+    @Transactional
     public List<Student> listStudents() {
         return studentRepository.findAll();
     }
@@ -38,6 +39,7 @@ public class StudentService {
         return saveStudent(foundStudent);
     }
 
+    @Transactional
     public Student searchById(Integer id) {
         return studentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Student not found"));

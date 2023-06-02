@@ -1,5 +1,7 @@
 package br.edu.ifpb.pweb2.pweb2.model;
 
+import br.edu.ifpb.pweb2.pweb2.model.entity.Institution;
+
 import java.util.List;
 
 public class InstitutionFactory {

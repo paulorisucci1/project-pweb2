@@ -1,7 +1,6 @@
 package br.edu.ifpb.pweb2.pweb2.controller;
 
-import br.edu.ifpb.pweb2.pweb2.model.AcademicTerm;
-import br.edu.ifpb.pweb2.pweb2.model.Enrollment;
+import br.edu.ifpb.pweb2.pweb2.model.entity.Enrollment;
 import br.edu.ifpb.pweb2.pweb2.service.AcademicTermService;
 import br.edu.ifpb.pweb2.pweb2.service.EnrollmentService;
 import jakarta.validation.Valid;
@@ -11,8 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 import static br.edu.ifpb.pweb2.pweb2.config.Paths.ENROLLMENTS;
 import static br.edu.ifpb.pweb2.pweb2.config.Paths.FORM;
@@ -93,6 +90,16 @@ public class EnrollmentController {
                 .replace("{idStudent}", idStudent.toString()));
 
         enrollmentService.delete(idEnrollment);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/{idEnrollment}/pdf")
+    private ModelAndView showPDF(ModelAndView modelAndView, @PathVariable Integer idStudent, @PathVariable Integer idEnrollment) {
+        final var pdf = enrollmentService.findEnrollmentPdfById(idEnrollment);
+
+        modelAndView.addObject("enrollment_pdf", pdf);
+        modelAndView.setViewName("students/enrollments/pdf_view");
 
         return modelAndView;
     }

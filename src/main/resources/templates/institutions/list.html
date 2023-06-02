@@ -27,13 +27,18 @@
                 <tr th:each="institution: ${institutionsList}">
                     <td><a th:text="${institution.acronym}"></a></td>
                     <td><a th:text="${institution.phone}"></a></td>
-                    <td >
-                        <a th:if="${institution.currentAcademicTerm == null}" th:href="@{*{'/institutions/'+institution.idInstitution+'/academic_terms/form'}}">
-                            <input type="button" value="Add" class="btn btn-secondary"/>
-                        </a>
+                    <td>
                         <a th:if="${institution.currentAcademicTerm != null}"
                            th:text="${institution.currentAcademicTerm.code}">
                         </a>
+                        <div>
+                            <a th:href="@{*{'/institutions/'+institution.idInstitution+'/academic_terms/form'}}">
+                                <input type="button" value="Add" class="btn btn-secondary"/>
+                            </a>
+                            <a th:href="@{*{'/institutions/'+institution.idInstitution+'/academic_terms'}}" th:if="${institution.currentAcademicTerm != null}">
+                                <input type="button" value="List" class="btn btn-secondary"/>
+                            </a>
+                        </div>
                     </td>
                     <td>
                         <form th:action="@{/institutions/{id}(id=${institution.idInstitution})}" class="operations-form">

@@ -22,7 +22,7 @@
       <th>Registration</th>
       <th>Name</th>
       <th>Institution</th>
-      <th>Current Enrollment Receipt Date</th>
+      <th>Current Enrollment</th>
       <th>Operations</th>
     </tr>
     </thead>
@@ -36,6 +36,7 @@
           <input type="button" value="Add" class="btn btn-secondary"/>
         </a>
         <a th:if="${student.currentEnrollment != null}"
+           th:href="@{*{'/students/'+student.idStudent+'/enrollments/'+student.currentEnrollment.idEnrollment}+'/pdf'}"
            th:text="${student.currentEnrollment.receiptDate}">
         </a>
       </td>

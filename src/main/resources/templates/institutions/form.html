@@ -30,7 +30,7 @@
         <label for="academicTerm">Academic Term</label>
 
         <select th:field="*{currentAcademicTerm.idAcademicTerm}" class="form-select mb-2">
-          <option th:each="academicTerm: *{academicTermList}" th:value="${academicTerm.idAcademicTerm}" th:text="${academicTerm.code}" />
+          <option th:each="academicTerm: *{academicTermList}" th:value="${academicTerm.idAcademicTerm}" th:text="${academicTerm.semester}" />
         </select>
 
         <a th:href="@{*{'/institutions/'+idInstitution+'/academic_terms/form'}}">

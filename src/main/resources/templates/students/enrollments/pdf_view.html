@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:insert="~{layout/layout}"
+      th:with="title='Enrollment list', leaveLink=@{${'/students'}}">
+<body>
+<header class="text-center">
+    <h1>Enrollments</h1>
+</header>
+<main layout:fragment="content">
+
+    <object th:data="${enrollment_pdf}" type="application/pdf" width="100%" height="600px">
+        <param name="src" value="value=${pdfUrl}">
+    </object>
+</main>
+</body>
+</html>

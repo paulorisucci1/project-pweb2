@@ -2,8 +2,8 @@ package br.edu.ifpb.pweb2.pweb2.service;
 
 import br.edu.ifpb.pweb2.pweb2.exceptions.EntityAlreadyExistException;
 import br.edu.ifpb.pweb2.pweb2.exceptions.EntityNotFoundException;
-import br.edu.ifpb.pweb2.pweb2.model.AcademicTerm;
-import br.edu.ifpb.pweb2.pweb2.model.Institution;
+import br.edu.ifpb.pweb2.pweb2.model.entity.AcademicTerm;
+import br.edu.ifpb.pweb2.pweb2.model.entity.Institution;
 import br.edu.ifpb.pweb2.pweb2.repository.InstitutionRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

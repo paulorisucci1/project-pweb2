@@ -18,7 +18,6 @@
     <thead>
     <tr>
       <th>Receipt date</th>
-      <th>Note</th>
       <th>Academic Term</th>
       <th></th>
     </tr>
@@ -26,8 +25,7 @@
     <tbody>
     <tr th:each="enrollment: ${enrollmentList}">
       <td><a th:text="${enrollment.receiptDate}"></a></td>
-      <td><a th:text="${enrollment.note}"></a></td>
-      <td><a th:text="${enrollment.academicTerm.code}"></a></td>
+      <td><a th:text="${enrollment.academicTerm.semester}"></a></td>
       <td>
         <form th:action="@{${'/students/'+idStudent+'/enrollments/'+enrollment.idEnrollment}}" th:method="GET">
           <button type="submit" class="btn btn-primary btn-sm">Update</button>

@@ -1,8 +1,8 @@
 package br.edu.ifpb.pweb2.pweb2.repository;
 
-import br.edu.ifpb.pweb2.pweb2.model.AcademicTerm;
-import br.edu.ifpb.pweb2.pweb2.model.Enrollment;
-import br.edu.ifpb.pweb2.pweb2.model.Student;
+import br.edu.ifpb.pweb2.pweb2.model.entity.AcademicTerm;
+import br.edu.ifpb.pweb2.pweb2.model.entity.Enrollment;
+import br.edu.ifpb.pweb2.pweb2.model.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
