@@ -31,7 +31,7 @@ public class AcademicTermDTO {
     @NotNull(message = "The endDate must be informed")
     private Date endDate;
 
-    private InstitutionDTO institutionDTO;
+    private InstitutionDTO institution;
 
     @JsonIgnore
     public String getCode() {
@@ -40,7 +40,7 @@ public class AcademicTermDTO {
 
     @Override
     public String toString() {
-        if(Objects.isNull(institutionDTO)) {
+        if(Objects.isNull(institution)) {
             return "AcademicTerm{" +
                     "idAcademicTerm=" + idAcademicTerm +
                     ", year=" + year +
@@ -54,7 +54,7 @@ public class AcademicTermDTO {
                 ", year=" + year +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", institution=" + institutionDTO.getAcronym() +
+                ", institution=" + institution.getAcronym() +
                 '}';
     }
 }

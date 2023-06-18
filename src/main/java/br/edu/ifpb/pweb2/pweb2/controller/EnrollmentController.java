@@ -1,6 +1,8 @@
 package br.edu.ifpb.pweb2.pweb2.controller;
 
+import br.edu.ifpb.pweb2.pweb2.model.dto.EnrollmentDTO;
 import br.edu.ifpb.pweb2.pweb2.model.entity.Enrollment;
+import br.edu.ifpb.pweb2.pweb2.model.mapper.EnrollmentMapper;
 import br.edu.ifpb.pweb2.pweb2.service.AcademicTermService;
 import br.edu.ifpb.pweb2.pweb2.service.EnrollmentService;
 import jakarta.validation.Valid;
@@ -23,14 +25,16 @@ public class EnrollmentController {
 
     private AcademicTermService academicTermService;
 
+    private EnrollmentMapper enrollmentMapper;
+
     @GetMapping(FORM)
-    public ModelAndView getForm(ModelAndView modelAndView, @PathVariable Integer idStudent, Enrollment enrollment) {
+    public ModelAndView getForm(ModelAndView modelAndView, @PathVariable Integer idStudent, EnrollmentDTO enrollment) {
         configureModelAndViewToForm(modelAndView, idStudent, enrollment);
         return modelAndView;
     }
 
     @PostMapping
-    public ModelAndView create(ModelAndView modelAndView, @PathVariable Integer idStudent, @Valid Enrollment enrollment, BindingResult validation,
+    public ModelAndView create(ModelAndView modelAndView, @PathVariable Integer idStudent, @Valid EnrollmentDTO enrollmentDTO, BindingResult validation,
                                RedirectAttributes redirectAttributes) {
 
         if(validation.hasErrors()) {
@@ -38,9 +42,10 @@ public class EnrollmentController {
             return modelAndView;
         }
 
-        final var createdEnrollment = enrollmentService.createEnrollmentForStudent(enrollment, idStudent);
+        final var enrollment = enrollmentMapper.toEntity(enrollmentDTO);
 
-        modelAndView.addObject("enrollment", createdEnrollment);
+        enrollmentService.createEnrollmentForStudent(enrollment, idStudent);
+
         modelAndView.setViewName("redirect:/students/{idStudent}".replace("{idStudent}", idStudent.toString()));
         redirectAttributes.addFlashAttribute("message", "Successfully registered enrollment.");
 
@@ -48,13 +53,15 @@ public class EnrollmentController {
     }
 
     @PutMapping("/{idEnrollment}")
-    public ModelAndView update(ModelAndView modelAndView, @PathVariable Integer idStudent, @PathVariable Integer idEnrollment, @Valid Enrollment enrollment,
+    public ModelAndView update(ModelAndView modelAndView, @PathVariable Integer idStudent, @PathVariable Integer idEnrollment, @Valid EnrollmentDTO enrollmentDTO,
                                BindingResult validation, RedirectAttributes redirectAttributes) {
 
         if(validation.hasErrors()) {
             modelAndView.setViewName("students/enrollments/form");
             return modelAndView;
         }
+
+        final var enrollment = enrollmentMapper.toEntity(enrollmentDTO);
 
         enrollment.setIdEnrollment(idEnrollment);
         final var updatedEnrollment = enrollmentService.update(enrollment);
@@ -70,7 +77,10 @@ public class EnrollmentController {
         modelAndView.setViewName("students/enrollments/list");
 
         final var enrollmentList = enrollmentService.listEnrollmentsOfStudent(idStudent);
-        modelAndView.addObject("enrollmentList", enrollmentList);
+
+        final var enrollmentListDTO = enrollmentMapper.toDTOList(enrollmentList);
+
+        modelAndView.addObject("enrollmentList", enrollmentListDTO);
         modelAndView.addObject("idStudent", idStudent);
 
         return modelAndView;
@@ -80,7 +90,8 @@ public class EnrollmentController {
     public ModelAndView getById(ModelAndView modelAndView, @PathVariable Integer idEnrollment, @PathVariable Integer idStudent) {
 
         final var foundEnrollment = enrollmentService.searchById(idEnrollment);
-        configureModelAndViewToForm(modelAndView, idStudent, foundEnrollment);
+        final var enrollmentDTO = enrollmentMapper.toDTO(foundEnrollment);
+        configureModelAndViewToForm(modelAndView, idStudent, enrollmentDTO);
         return modelAndView;
     }
 
@@ -104,12 +115,12 @@ public class EnrollmentController {
         return modelAndView;
     }
 
-    private void configureModelAndViewToForm(ModelAndView modelAndView, Integer idStudent, Enrollment enrollment) {
+    private void configureModelAndViewToForm(ModelAndView modelAndView, Integer idStudent, EnrollmentDTO enrollmentDTO) {
 
         final var academicTermList = enrollmentService.listAcademicTermsForStudent(idStudent);
 
         modelAndView.addObject("idStudent", idStudent);
-        modelAndView.addObject("enrollment", enrollment);
+        modelAndView.addObject("enrollment", enrollmentDTO);
         modelAndView.addObject("academicTermList", academicTermList);
         modelAndView.setViewName("students/enrollments/form");
     }

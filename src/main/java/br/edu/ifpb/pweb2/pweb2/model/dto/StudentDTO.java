@@ -19,9 +19,9 @@ public class StudentDTO {
     @NotNull(message = "The registration must not be null.")
     private String registration;
 
-    private InstitutionDTO institutionDTO;
+    private InstitutionDTO institution;
 
-    private List<EnrollmentDTO> enrollmentsDTO;
+    private List<EnrollmentDTO> enrollments;
 
-    private EnrollmentDTO currentEnrollmentDTO;
+    private EnrollmentDTO currentEnrollment;
 }

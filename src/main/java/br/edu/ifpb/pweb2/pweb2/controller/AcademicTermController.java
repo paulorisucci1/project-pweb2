@@ -1,6 +1,8 @@
 package br.edu.ifpb.pweb2.pweb2.controller;
 
+import br.edu.ifpb.pweb2.pweb2.model.dto.AcademicTermDTO;
 import br.edu.ifpb.pweb2.pweb2.model.entity.AcademicTerm;
+import br.edu.ifpb.pweb2.pweb2.model.mapper.AcademicTermMapper;
 import br.edu.ifpb.pweb2.pweb2.service.AcademicTermService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,16 +21,18 @@ public class AcademicTermController {
 
     private AcademicTermService academicTermService;
 
+    private AcademicTermMapper mapper;
+
     @GetMapping(FORM)
-    public ModelAndView getForm(ModelAndView modelAndView, @PathVariable Integer idInstitution, AcademicTerm academicTerm) {
+    public ModelAndView getForm(ModelAndView modelAndView, @PathVariable Integer idInstitution, AcademicTermDTO academicTermDTO) {
         modelAndView.setViewName("institutions/academic_terms/form");
         modelAndView.addObject("idInstitution", idInstitution);
-        modelAndView.addObject("academicTerm", academicTerm);
+        modelAndView.addObject("academicTerm", academicTermDTO);
         return modelAndView;
     }
 
     @PostMapping
-    public ModelAndView create(@PathVariable Integer idInstitution, @Valid AcademicTerm academicTerm, BindingResult validation,
+    public ModelAndView create(@PathVariable Integer idInstitution, @Valid AcademicTermDTO academicTermDTO, BindingResult validation,
                                ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
 
         if(validation.hasErrors()) {
@@ -36,9 +40,10 @@ public class AcademicTermController {
             return modelAndView;
         }
 
-        final var createdAcademicTerm = academicTermService.createAcademicTermForInstitution(academicTerm, idInstitution);
+        final var academicTerm = mapper.toEntity(academicTermDTO);
 
-        modelAndView.addObject("academicTerm", createdAcademicTerm);
+        academicTermService.createAcademicTermForInstitution(academicTerm, idInstitution);
+
         modelAndView.setViewName("redirect:/institutions");
         redirectAttributes.addFlashAttribute("message", "Successfully registered academic term.");
 
@@ -46,7 +51,7 @@ public class AcademicTermController {
     }
 
     @PutMapping("/{idAcademicTerm}")
-    public ModelAndView update(@PathVariable Integer idInstitution, @PathVariable Integer idAcademicTerm, @Valid AcademicTerm academicTerm,
+    public ModelAndView update(@PathVariable Integer idInstitution, @PathVariable Integer idAcademicTerm, @Valid AcademicTermDTO academicTermDTO,
                                BindingResult validation, ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
 
         if(validation.hasErrors()) {
@@ -54,9 +59,10 @@ public class AcademicTermController {
             return modelAndView;
         }
 
+        final var academicTerm = mapper.toEntity(academicTermDTO);
+
         academicTerm.setIdAcademicTerm(idAcademicTerm);
-        final var updatedAcademicTerm = academicTermService.update(academicTerm);
-        modelAndView.addObject("academicTerm", updatedAcademicTerm);
+        academicTermService.update(academicTerm);
         modelAndView.setViewName("redirect:/institutions/{idInstitution}/academic_terms".replace("{idInstitution}", idInstitution.toString()));
         redirectAttributes.addFlashAttribute("message", "Successfully updated academic term.");
 
@@ -68,7 +74,10 @@ public class AcademicTermController {
         modelAndView.setViewName("institutions/academic_terms/list");
 
         final var academicTermList = academicTermService.listAcademicTermsOfInstitution(idInstitution);
-        modelAndView.addObject("academicTermList", academicTermList);
+
+        final var academicTermDTOList = mapper.toDTOList(academicTermList);
+
+        modelAndView.addObject("academicTermList", academicTermDTOList);
         modelAndView.addObject("idInstitution", idInstitution);
 
         return modelAndView;
@@ -79,7 +88,8 @@ public class AcademicTermController {
         modelAndView.setViewName("institutions/academic_terms/form");
 
         final var foundAcademicTerm = academicTermService.searchById(idAcademicTerm);
-        modelAndView.addObject("academicTerm", foundAcademicTerm);
+        final var academicTermDTO = mapper.toDTO(foundAcademicTerm);
+        modelAndView.addObject("academicTerm", academicTermDTO);
 
         return modelAndView;
     }

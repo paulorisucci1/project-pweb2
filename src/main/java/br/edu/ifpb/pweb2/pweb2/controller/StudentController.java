@@ -1,8 +1,10 @@
 package br.edu.ifpb.pweb2.pweb2.controller;
 
+import br.edu.ifpb.pweb2.pweb2.model.dto.InstitutionDTO;
 import br.edu.ifpb.pweb2.pweb2.model.entity.Institution;
-import br.edu.ifpb.pweb2.pweb2.model.entity.Student;
 import br.edu.ifpb.pweb2.pweb2.model.dto.StudentDTO;
+import br.edu.ifpb.pweb2.pweb2.model.mapper.InstitutionMapper;
+import br.edu.ifpb.pweb2.pweb2.model.mapper.StudentMapper;
 import br.edu.ifpb.pweb2.pweb2.service.InstitutionService;
 import br.edu.ifpb.pweb2.pweb2.service.StudentService;
 import jakarta.transaction.Transactional;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static br.edu.ifpb.pweb2.pweb2.config.Paths.FORM;
@@ -30,21 +31,27 @@ public class StudentController {
 
     private InstitutionService institutionService;
 
+    private StudentMapper studentMapper;
+
+    private InstitutionMapper institutionMapper;
+
     @GetMapping(FORM)
-    public ModelAndView getForm(ModelAndView modelAndView, Student student) {
+    public ModelAndView getForm(ModelAndView modelAndView, StudentDTO studentDTO) {
         modelAndView.setViewName("students/form");
-        modelAndView.addObject("student", student);
+        modelAndView.addObject("student", studentDTO);
         return modelAndView;
     }
 
     @PostMapping
-    public ModelAndView createStudent(@Valid Student student, BindingResult validation,
+    public ModelAndView createStudent(@Valid StudentDTO studentDTO, BindingResult validation,
                                       ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
 
         if(validation.hasErrors()) {
             modelAndView.setViewName("students/form");
             return modelAndView;
         }
+
+        final var student = studentMapper.toEntity(studentDTO);
 
         final var createdStudent = studentService.create(student);
 
@@ -56,13 +63,15 @@ public class StudentController {
     }
 
     @PutMapping("/{idStudent}")
-    public ModelAndView updateStudent(@PathVariable Integer idStudent, @Valid Student student, BindingResult validation,
+    public ModelAndView updateStudent(@PathVariable Integer idStudent, @Valid StudentDTO studentDTO, BindingResult validation,
                                           ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
 
         if(validation.hasErrors()) {
             modelAndView.setViewName("students/form");
             return modelAndView;
         }
+
+        final var student = studentMapper.toEntity(studentDTO);
 
         student.setIdStudent(idStudent);
         final var updatedStudent = studentService.update(student);
@@ -78,6 +87,7 @@ public class StudentController {
         modelAndView.setViewName("students/list");
 
         final var studentList = studentService.listStudents();
+        final var studentListDTO = studentMapper.toDTOList(studentList);
         modelAndView.addObject("studentList", studentList);
 
         return modelAndView;
@@ -88,7 +98,8 @@ public class StudentController {
         modelAndView.setViewName("students/form");
 
         final var foundStudent = studentService.searchById(idStudent);
-        modelAndView.addObject("student", foundStudent);
+        final var studentDTO = studentMapper.toDTO(foundStudent);
+        modelAndView.addObject("student", studentDTO);
 
         return modelAndView;
     }
@@ -103,7 +114,11 @@ public class StudentController {
     }
 
     @ModelAttribute("institutionList")
-    public List<Institution> findAllInstitutions() {
-        return institutionService.listInstitutions();
+    public List<InstitutionDTO> findAllInstitutions() {
+        final var institutionList = institutionService.listInstitutions();
+
+        final var institutionListDTO = institutionMapper.toDTOList(institutionList);
+
+        return institutionListDTO;
     }
 }

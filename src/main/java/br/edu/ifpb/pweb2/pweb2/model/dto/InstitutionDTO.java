@@ -21,9 +21,9 @@ public class InstitutionDTO {
     @Digits(integer = 20, fraction = 0, message = "The phone must be a number.")
     private String phone;
 
-    private List<AcademicTermDTO> academicTermDTOList;
+    private List<AcademicTermDTO> academicTermList;
 
-    private AcademicTermDTO currentAcademicTermDTO;
+    private AcademicTermDTO currentAcademicTerm;
 
     @Override
     public String toString() {
@@ -31,8 +31,8 @@ public class InstitutionDTO {
                 "idInstitution=" + idInstitution +
                 ", acronym='" + acronym + '\'' +
                 ", phone='" + phone + '\'' +
-                ", academicTermList=" + academicTermDTOList +
-                ", currentAcademicTerm=" + currentAcademicTermDTO +
+                ", academicTermList=" + academicTermList +
+                ", currentAcademicTerm=" + currentAcademicTerm +
                 '}';
     }
 }

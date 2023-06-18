@@ -22,10 +22,14 @@ public class EnrollmentDTO {
 
     private byte[] document;
 
-    private StudentDTO studentDTO;
+    private StudentDTO student;
 
     @NotNull(message = "The academic term must be provided. If there are no academic terms available, please register one for your institution")
-    private AcademicTermDTO academicTermDTO;
+    private AcademicTermDTO academicTerm;
+
+    public void setDocument(byte[] document) {
+        this.document = document;
+    }
 
     public void setDocument(MultipartFile file) {
         try {
