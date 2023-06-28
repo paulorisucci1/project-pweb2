@@ -5,15 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import static br.edu.ifpb.pweb2.pweb2.paths.Paths.HOME;
-
-@RequestMapping(HOME)
 @Controller
-public class HomeController {
+@RequestMapping("/auth")
+public class AuthController {
 
     @GetMapping
-    public ModelAndView getHomePage(ModelAndView modelAndView) {
-        modelAndView.setViewName("index");
+    public ModelAndView getForm(ModelAndView modelAndView) {
+        modelAndView.setViewName("auth/login");
         return modelAndView;
     }
 }

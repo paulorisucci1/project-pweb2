@@ -24,8 +24,11 @@
       <a th:classappend="${menu == 'enrollment'} ? 'active'" class="nav-item nav-link text-dark" th:href="@{/enrollments}">Enrollments</a>
     </div>
     <div style="margin-right: 5px;">
-      <form th:action="${leaveLink}">
-        <input type="submit" class="btn btn-outline-secondary my-2 my-sm-0" value="Leave"/>
+      <form class="form-inline my-2 my-lg-0" th:action="@{/auth/logout}" method="POST">
+        <span sec:authorize="isAuthenticated()" sec:authentication="name" style="margin-right: 3px; font-size: 0.8em;"></span>
+        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">
+          Leave
+        </button>
       </form>
     </div>
   </nav>

@@ -6,7 +6,7 @@
 </head>
 <body>
 
-    <div th:replace="~{/fragments/base :: navmenu(leaveLink=${leaveLink})}"/>
+    <div th:replace="~{/fragments/base :: navmenu(leaveLink=@{'/logout'})}"/>
 
     <div class="container">
         <div th:text="${message}" th:if="${message ne null}" class="alert alert-success"></div>

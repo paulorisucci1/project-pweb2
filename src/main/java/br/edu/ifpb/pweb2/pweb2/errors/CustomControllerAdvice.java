@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.security.access.AccessDeniedException;
 
 @ControllerAdvice
 public class CustomControllerAdvice {
@@ -28,6 +29,13 @@ public class CustomControllerAdvice {
     public ModelAndView handleMaxSizeException() {
         ModelAndView modelAndView = new ModelAndView("exception");
         modelAndView.addObject("errorMessage", String.format("The file exceeds maximum size (%s)!", maxUploadSize));
+        return modelAndView;
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ModelAndView handleAccessDenied() {
+        ModelAndView modelAndView = new ModelAndView("exception");
+        modelAndView.addObject("errorMessage", String.format("Access denied for this resource. Please, contact an admin."));
         return modelAndView;
     }
 

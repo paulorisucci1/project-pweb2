@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb2.pweb2.filters;
+package br.edu.ifpb.pweb2.pweb2.config.servlet;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

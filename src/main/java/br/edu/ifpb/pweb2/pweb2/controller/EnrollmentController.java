@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import static br.edu.ifpb.pweb2.pweb2.config.Paths.ENROLLMENTS;
+import java.util.Objects;
+
+import static br.edu.ifpb.pweb2.pweb2.paths.Paths.ENROLLMENTS;
 
 @Controller
 @RequestMapping(ENROLLMENTS)
@@ -36,6 +38,7 @@ public class EnrollmentController {
 
     @GetMapping("/expiring")
     public ModelAndView listExpiringEnrollments(ModelAndView modelAndView, Integer days) {
+
         modelAndView.setViewName("enrollments/list");
 
         final var expiredEnrollmentList = enrollmentService.listExpiringEnrollmentsInXDays(days);

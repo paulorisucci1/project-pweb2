@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb2.pweb2.config;
+package br.edu.ifpb.pweb2.pweb2.paths;
 
 public class Paths {
     public static final String INSTITUTIONS = "/institutions";

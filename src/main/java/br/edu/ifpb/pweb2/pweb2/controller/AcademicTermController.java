@@ -4,13 +4,14 @@ import br.edu.ifpb.pweb2.pweb2.model.AcademicTerm;
 import br.edu.ifpb.pweb2.pweb2.service.AcademicTermService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static br.edu.ifpb.pweb2.pweb2.config.Paths.*;
+import static br.edu.ifpb.pweb2.pweb2.paths.Paths.*;
 
 @AllArgsConstructor
 @Controller
@@ -20,6 +21,7 @@ public class AcademicTermController {
     private AcademicTermService academicTermService;
 
     @GetMapping(FORM)
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getForm(ModelAndView modelAndView, @PathVariable Integer idInstitution, AcademicTerm academicTerm) {
         modelAndView.setViewName("institutions/academic_terms/form");
         modelAndView.addObject("idInstitution", idInstitution);
@@ -28,6 +30,7 @@ public class AcademicTermController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView create(@PathVariable Integer idInstitution, @Valid AcademicTerm academicTerm, BindingResult validation,
                                ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
 
@@ -46,6 +49,7 @@ public class AcademicTermController {
     }
 
     @PutMapping("/{idAcademicTerm}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView update(@PathVariable Integer idInstitution, @PathVariable Integer idAcademicTerm, @Valid AcademicTerm academicTerm,
                                BindingResult validation, ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
 
@@ -75,6 +79,7 @@ public class AcademicTermController {
     }
 
     @GetMapping("/{idAcademicTerm}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getById(@PathVariable Integer idAcademicTerm, @PathVariable Integer idInstitution, ModelAndView modelAndView) {
         modelAndView.setViewName("institutions/academic_terms/form");
 
@@ -85,6 +90,7 @@ public class AcademicTermController {
     }
 
     @DeleteMapping("/{idAcademicTerm}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView deleteById(@PathVariable Integer idAcademicTerm, @PathVariable Integer idInstitution, ModelAndView modelAndView) {
         modelAndView.setViewName("redirect:/institutions/{idInstitution}/academic_terms"
                 .replace("{idInstitution}", idInstitution.toString()));

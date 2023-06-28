@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static br.edu.ifpb.pweb2.pweb2.config.Paths.STUDENT_ENROLLMENTS;
-import static br.edu.ifpb.pweb2.pweb2.config.Paths.FORM;
+import static br.edu.ifpb.pweb2.pweb2.paths.Paths.STUDENT_ENROLLMENTS;
+import static br.edu.ifpb.pweb2.pweb2.paths.Paths.FORM;
 
 @Controller
 @RequestMapping(STUDENT_ENROLLMENTS)

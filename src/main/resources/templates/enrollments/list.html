@@ -16,7 +16,7 @@
         </form>
         <form th:action="@{${'/enrollments/expiring'}}" method="GET" class="d-flex flex-row gap-1">
             <label for="days">Days for expiring</label>
-            <input type="number" name="days"/>
+            <input type="number" name="days" required/>
             <button class="btn btn-primary" type="submit">Expiring Enrollments</button>
         </form>
     </div>

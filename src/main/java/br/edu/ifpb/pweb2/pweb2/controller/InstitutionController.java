@@ -2,17 +2,17 @@ package br.edu.ifpb.pweb2.pweb2.controller;
 
 import br.edu.ifpb.pweb2.pweb2.model.Institution;
 import br.edu.ifpb.pweb2.pweb2.service.InstitutionService;
-import br.edu.ifpb.pweb2.pweb2.service.AcademicTermService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static br.edu.ifpb.pweb2.pweb2.config.Paths.FORM;
-import static br.edu.ifpb.pweb2.pweb2.config.Paths.INSTITUTIONS;
+import static br.edu.ifpb.pweb2.pweb2.paths.Paths.FORM;
+import static br.edu.ifpb.pweb2.pweb2.paths.Paths.INSTITUTIONS;
 
 @AllArgsConstructor
 @RequestMapping(INSTITUTIONS)
@@ -22,6 +22,7 @@ public class InstitutionController {
     private InstitutionService institutionService;
 
     @GetMapping(FORM)
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getForm(ModelAndView modelAndView, Institution institution) {
         modelAndView.setViewName("institutions/form");
         modelAndView.addObject("institution", institution);
@@ -29,6 +30,7 @@ public class InstitutionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView createInstitution(@Valid Institution institution, BindingResult validation,
                                           ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
 
@@ -47,6 +49,7 @@ public class InstitutionController {
     }
 
     @PutMapping("/{idInstitution}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView updateInstitution(@PathVariable Integer idInstitution, @Valid Institution institution, BindingResult validation,
                                           ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
 
@@ -75,6 +78,7 @@ public class InstitutionController {
     }
 
     @GetMapping("/{idInstitution}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getById(@PathVariable Integer idInstitution, ModelAndView modelAndView) {
         modelAndView.setViewName("institutions/form");
 
@@ -85,6 +89,7 @@ public class InstitutionController {
     }
 
     @DeleteMapping("/{idInstitution}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView deleteById(@PathVariable Integer idInstitution, ModelAndView modelAndView) {
         modelAndView.setViewName("redirect:/institutions");
 
