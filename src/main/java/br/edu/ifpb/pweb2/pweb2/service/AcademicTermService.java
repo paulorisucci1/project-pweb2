@@ -6,6 +6,8 @@ import br.edu.ifpb.pweb2.pweb2.model.AcademicTerm;
 import br.edu.ifpb.pweb2.pweb2.repository.AcademicTermRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +41,11 @@ public class AcademicTermService {
     public List<AcademicTerm> listAcademicTermsOfInstitution(Integer idInstitution) {
         final var institution = institutionService.searchById(idInstitution);
         return academicTermRepository.findAllByInstitution(institution);
+    }
+
+    public Page<AcademicTerm> listAcademicTermsOfInstitutionPaging(Integer idInstitution, Pageable pageable) {
+        final var institution = institutionService.searchById(idInstitution);
+        return academicTermRepository.getAllByInstitution(institution, pageable);
     }
 
     public AcademicTerm searchById(Integer id) {

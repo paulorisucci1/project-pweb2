@@ -7,9 +7,9 @@ import br.edu.ifpb.pweb2.pweb2.model.Student;
 import br.edu.ifpb.pweb2.pweb2.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -25,13 +25,13 @@ public class StudentService {
     }
 
     @Transactional
-    public List<Student> listStudents() {
-        return studentRepository.findAll();
+    public Page<Student> listStudents(Pageable pageable) {
+        return studentRepository.findAll(pageable);
     }
 
     @Transactional
-    public List<Student> listStudentsWithoutEnrollments() {
-        return studentRepository.findAllWithoutEnrollment();
+    public Page<Student> listStudentsWithoutEnrollments(Pageable pageable) {
+        return studentRepository.findAllByCurrentEnrollmentIsNull(pageable);
     }
 
     public Student update(Student updatedStudent) {

@@ -7,6 +7,8 @@ import br.edu.ifpb.pweb2.pweb2.model.Institution;
 import br.edu.ifpb.pweb2.pweb2.repository.InstitutionRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +26,12 @@ public class InstitutionService {
         return saveInstitution(newInstitution);
     }
 
-    public List<Institution> listInstitutions() {
+    public List<Institution> listAllInstitutions() {
         return institutionRepository.findAll();
+    }
+
+    public Page<Institution> listInstitutions(Pageable pageable) {
+        return institutionRepository.findAll(pageable);
     }
 
     public Institution update(Institution updatedInstitution) {

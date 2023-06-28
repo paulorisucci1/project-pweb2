@@ -12,8 +12,8 @@
   </form>
 
   <table class="table table-striped table-hover">
-    <div th:if="${not #lists.isEmpty(academicTermList)}">
-      <div th:text="'Total of '+${#lists.size(academicTermList)} + ' registers.'" class="text-right"></div>
+    <div th:if="${not academicTermList.isEmpty()}">
+      <div th:text="'Total of '+${#lists.size(academicTermList.numberOfElements)} + ' registers.'" class="text-right"></div>
     </div>
     <thead>
     <tr>
@@ -41,6 +41,7 @@
     </tr>
     </tbody>
   </table>
+  <div th:replace="~{/fragments/paging :: paginator('academic_terms', ${navPage})}" />
 </main>
 </body>
 </html>

@@ -12,8 +12,8 @@
         </form>
 
         <table class="table table-striped table-hover">
-            <div th:if="${not #lists.isEmpty(institutionsList)}">
-                <div th:text="'Total of '+${#lists.size(institutionsList)} + ' registers.'" class="text-right"></div>
+            <div th:if="${not institutionsList.isEmpty()}">
+                <div th:text="'Total of '+${institutionsList.numberOfElements} + ' registers.'" class="text-right"></div>
             </div>
             <thead>
                 <tr>
@@ -32,7 +32,7 @@
                            th:text="${institution.currentAcademicTerm.code}">
                         </a>
                         <div>
-                            <a th:href="@{*{'/institutions/'+institution.idInstitution+'/academic_terms'}}" th:if="${institution.currentAcademicTerm != null}">
+                            <a th:href="@{*{'/institutions/'+institution.idInstitution+'/academic_terms'}}" th:if="${not institution.academicTermList.isEmpty()}">
                                 <input type="button" value="List" class="btn btn-secondary"/>
                             </a>
                             <a th:href="@{*{'/institutions/'+institution.idInstitution+'/academic_terms/form'}}">
@@ -51,6 +51,7 @@
                 </tr>
             </tbody>
         </table>
+        <div th:replace="~{/fragments/paging :: paginator('institutions', ${navPage})}" />
     </main>
 </body>
 </html>

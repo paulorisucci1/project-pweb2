@@ -6,6 +6,8 @@ import br.edu.ifpb.pweb2.pweb2.model.Enrollment;
 import br.edu.ifpb.pweb2.pweb2.repository.EnrollmentRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -23,8 +25,8 @@ public class EnrollmentService {
     private AcademicTermService academicTermService;
 
 
-    public List<Enrollment> list() {
-        return enrollmentRepository.findAll();
+    public Page<Enrollment> list(Pageable pageable) {
+        return enrollmentRepository.findAll(pageable);
     }
 
     @Transactional
@@ -42,9 +44,9 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public List<Enrollment> listEnrollmentsOfStudent(Integer idStudent) {
+    public Page<Enrollment> listEnrollmentsOfStudent(Integer idStudent, Pageable pageable) {
         final var institution = studentService.searchById(idStudent);
-        return enrollmentRepository.findAllByStudent(institution);
+        return enrollmentRepository.findAllByStudent(institution, pageable);
     }
 
     @Transactional
@@ -76,14 +78,14 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public List<Enrollment> listExpiredEnrollments() {
-        return enrollmentRepository.getExpiredEnrollments();
+    public Page<Enrollment> listExpiredEnrollments(Pageable pageable) {
+        return enrollmentRepository.getExpiredEnrollments(pageable);
     }
 
     @Transactional
-    public List<Enrollment> listExpiringEnrollmentsInXDays(Integer days) {
+    public Page<Enrollment> listExpiringEnrollmentsInXDays(Integer days, Pageable pageable) {
         Date expiringDate = getExpiringDateFromNow(days);
-        return enrollmentRepository.getEnrollmentsExpiringInDate(expiringDate);
+        return enrollmentRepository.getEnrollmentsExpiringInDate(expiringDate, pageable);
     }
 
     private Date getExpiringDateFromNow(Integer days) {

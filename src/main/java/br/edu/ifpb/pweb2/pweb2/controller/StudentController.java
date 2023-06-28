@@ -6,6 +6,8 @@ import br.edu.ifpb.pweb2.pweb2.service.InstitutionService;
 import br.edu.ifpb.pweb2.pweb2.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import static br.edu.ifpb.pweb2.pweb2.paths.Paths.FORM;
 import static br.edu.ifpb.pweb2.pweb2.paths.Paths.STUDENTS;
+import static br.edu.ifpb.pweb2.pweb2.ui.NavPageUtils.createNavePageFromPageWithSize;
 
 @Controller
 @RequestMapping(STUDENTS)
@@ -74,21 +77,27 @@ public class StudentController {
     }
 
     @GetMapping
-    public ModelAndView listAll(ModelAndView modelAndView) {
-        modelAndView.setViewName("students/list");
+    public ModelAndView listAll(ModelAndView modelAndView, @RequestParam(defaultValue = "1") int page,
+                                @RequestParam(defaultValue = "5") int size) {
 
-        final var studentList = studentService.listStudents();
-        modelAndView.addObject("studentList", studentList);
+        Pageable paging = PageRequest.of(page-1, size);
+        final var students = studentService.listStudents(paging);
+        modelAndView.addObject("studentList", students);
+        modelAndView.addObject("navPage", createNavePageFromPageWithSize(students, size));
+        modelAndView.setViewName("students/list");
 
         return modelAndView;
     }
 
     @GetMapping("/without-enrollments")
-    public ModelAndView listAllWithoutEnrollments(ModelAndView modelAndView) {
-        modelAndView.setViewName("students/list");
+    public ModelAndView listAllWithoutEnrollments(ModelAndView modelAndView, @RequestParam(defaultValue = "1") int page,
+                                                  @RequestParam(defaultValue = "5") int size) {
 
-        final var studentList = studentService.listStudentsWithoutEnrollments();
-        modelAndView.addObject("studentList", studentList);
+        Pageable paging = PageRequest.of(page-1, size);
+        final var students = studentService.listStudentsWithoutEnrollments(paging);
+        modelAndView.addObject("studentList", students);
+        modelAndView.addObject("navPage", createNavePageFromPageWithSize(students, size));
+        modelAndView.setViewName("students/list");
 
         return modelAndView;
     }
@@ -116,6 +125,6 @@ public class StudentController {
 
     @ModelAttribute("institutionList")
     public List<Institution> findAllInstitutions() {
-        return institutionService.listInstitutions();
+        return institutionService.listAllInstitutions();
     }
 }

@@ -4,6 +4,8 @@ import br.edu.ifpb.pweb2.pweb2.model.AcademicTerm;
 import br.edu.ifpb.pweb2.pweb2.service.AcademicTermService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static br.edu.ifpb.pweb2.pweb2.paths.Paths.*;
+import static br.edu.ifpb.pweb2.pweb2.ui.NavPageUtils.createNavePageFromPageWithSize;
 
 @AllArgsConstructor
 @Controller
@@ -68,12 +71,16 @@ public class AcademicTermController {
     }
 
     @GetMapping
-    public ModelAndView listAll(ModelAndView modelAndView, @PathVariable Integer idInstitution) {
-        modelAndView.setViewName("institutions/academic_terms/list");
+    public ModelAndView listAll(ModelAndView modelAndView, @PathVariable Integer idInstitution,
+                                @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int size) {
 
-        final var academicTermList = academicTermService.listAcademicTermsOfInstitution(idInstitution);
-        modelAndView.addObject("academicTermList", academicTermList);
+        Pageable paging = PageRequest.of(page - 1, size);
+        final var academicTermPage = academicTermService.listAcademicTermsOfInstitutionPaging(idInstitution, paging);
+
+        modelAndView.addObject("academicTermList", academicTermPage);
         modelAndView.addObject("idInstitution", idInstitution);
+        modelAndView.addObject("navPage", createNavePageFromPageWithSize(academicTermPage, size));
+        modelAndView.setViewName("institutions/academic_terms/list");
 
         return modelAndView;
     }

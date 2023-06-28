@@ -4,6 +4,8 @@ import br.edu.ifpb.pweb2.pweb2.model.Enrollment;
 import br.edu.ifpb.pweb2.pweb2.service.EnrollmentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static br.edu.ifpb.pweb2.pweb2.paths.Paths.STUDENT_ENROLLMENTS;
 import static br.edu.ifpb.pweb2.pweb2.paths.Paths.FORM;
+import static br.edu.ifpb.pweb2.pweb2.ui.NavPageUtils.createNavePageFromPageWithSize;
 
 @Controller
 @RequestMapping(STUDENT_ENROLLMENTS)
@@ -65,37 +68,18 @@ public class StudentEnrollmentsController {
     }
 
     @GetMapping
-    public ModelAndView listAll(ModelAndView modelAndView, @PathVariable Integer idStudent) {
-        modelAndView.setViewName("students/enrollments/list");
+    public ModelAndView listAll(ModelAndView modelAndView, @PathVariable Integer idStudent,
+                                @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int size) {
+        Pageable paging = PageRequest.of(page-1, size);
+        final var enrollments = enrollmentService.listEnrollmentsOfStudent(idStudent, paging);
 
-        final var enrollmentList = enrollmentService.listEnrollmentsOfStudent(idStudent);
-        modelAndView.addObject("enrollmentList", enrollmentList);
+        modelAndView.addObject("enrollmentList", enrollments);
         modelAndView.addObject("idStudent", idStudent);
+        modelAndView.addObject("navPage", createNavePageFromPageWithSize(enrollments, size));
+        modelAndView.setViewName("students/enrollments/list");
 
         return modelAndView;
     }
-
-//    @GetMapping("/expired")
-//    public ModelAndView listExpiredEnrollments(ModelAndView modelAndView, @PathVariable Integer idStudent) {
-//        modelAndView.setViewName("students/enrollments/list");
-//
-//        final var expiredEnrollmentList = enrollmentService.listExpiredEnrollments(idStudent);
-//        modelAndView.addObject("enrollmentList", expiredEnrollmentList);
-//        modelAndView.addObject("idStudent", idStudent);
-//
-//        return modelAndView;
-//    }
-
-//    @GetMapping("/expiring")
-//    public ModelAndView listExpiringEnrollments(ModelAndView modelAndView, @PathVariable Integer idStudent, Integer days) {
-//        modelAndView.setViewName("students/enrollments/list");
-//
-//        final var expiredEnrollmentList = enrollmentService.listExpiringEnrollmentsOfStudentInXDays(idStudent, days);
-//        modelAndView.addObject("enrollmentList", expiredEnrollmentList);
-//        modelAndView.addObject("idStudent", idStudent);
-//
-//        return modelAndView;
-//    }
 
     @GetMapping("/{idEnrollment}")
     public ModelAndView getById(ModelAndView modelAndView, @PathVariable Integer idEnrollment, @PathVariable Integer idStudent) {

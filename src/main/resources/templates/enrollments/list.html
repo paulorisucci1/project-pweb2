@@ -22,8 +22,8 @@
     </div>
 
     <table class="table table-striped table-hover">
-        <div th:if="${not #lists.isEmpty(enrollmentList)}">
-            <div th:text="'Total of '+${#lists.size(enrollmentList)} + ' registers.'" class="text-right"></div>
+        <div th:if="${not enrollmentList.isEmpty()}">
+            <div th:text="'Total of '+${enrollmentList.numberOfElements} + ' registers.'" class="text-right"></div>
         </div>
         <thead>
         <tr>
@@ -54,6 +54,7 @@
         </tr>
         </tbody>
     </table>
+    <div th:replace="~{/fragments/paging :: paginator('enrollments', ${navPage})}" />
 </main>
 </body>
 </html>

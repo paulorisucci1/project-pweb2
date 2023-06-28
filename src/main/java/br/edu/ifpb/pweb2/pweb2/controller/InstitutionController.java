@@ -4,6 +4,8 @@ import br.edu.ifpb.pweb2.pweb2.model.Institution;
 import br.edu.ifpb.pweb2.pweb2.service.InstitutionService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static br.edu.ifpb.pweb2.pweb2.paths.Paths.FORM;
 import static br.edu.ifpb.pweb2.pweb2.paths.Paths.INSTITUTIONS;
+import static br.edu.ifpb.pweb2.pweb2.ui.NavPageUtils.createNavePageFromPageWithSize;
 
 @AllArgsConstructor
 @RequestMapping(INSTITUTIONS)
@@ -68,11 +71,14 @@ public class InstitutionController {
     }
 
     @GetMapping
-    public ModelAndView listAll(ModelAndView modelAndView) {
+    public ModelAndView listAll(ModelAndView modelAndView, @RequestParam(defaultValue = "1") int page, @RequestParam (defaultValue = "5") int size) {
         modelAndView.setViewName("institutions/list");
 
-        final var institutionsList = institutionService.listInstitutions();
-        modelAndView.addObject("institutionsList", institutionsList);
+        Pageable paging = PageRequest.of(page - 1, size);
+
+        final var institutions = institutionService.listInstitutions(paging);
+        modelAndView.addObject("institutionsList", institutions);
+        modelAndView.addObject("navPage", createNavePageFromPageWithSize(institutions, size));
 
         return modelAndView;
     }

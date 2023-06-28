@@ -55,8 +55,12 @@ public class WebSecurityConfig {
                 .build();
 
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-        users.createUser(user);
-        users.createUser(admin);
+        if(!users.userExists(user.getUsername())) {
+            users.createUser(user);
+        }
+        if(!users.userExists(admin.getUsername())) {
+            users.createUser(admin);
+        }
         return users;
     }
 }
