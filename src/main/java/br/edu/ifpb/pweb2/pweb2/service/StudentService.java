@@ -53,7 +53,6 @@ public class StudentService {
     @Transactional
     public void delete(Integer id) {
         final var student = searchById(id);
-        student.removeAllEnrollments();
         studentRepository.delete(student);
     }
 

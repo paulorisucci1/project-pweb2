@@ -61,11 +61,6 @@ public class Student {
         enrollment.setStudent(this);
     }
 
-    public void removeAllEnrollments() {
-        this.enrollments.forEach(enrollment -> enrollment.setStudent(null));
-        this.enrollments = new ArrayList<>();
-        this.currentEnrollment = null;
-    }
 
     public void removeEnrollment(Enrollment enrollment) {
         if(isCurrentEnrollment(enrollment)) {
