@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:insert="~{layout/layout}"
+      th:with="title='Enrollment list', leaveLink=@{${'/home'}}">
+<body>
+<header class="text-center">
+    <h1>Enrollments</h1>
+</header>
+<main layout:fragment="content">
+
+    <div class="d-flex flex-row gap-3">
+        <form th:action="@{${'/enrollments'}}" method="GET">
+            <button class="btn btn-primary" type="submit">List Enrollments</button>
+        </form>
+        <form th:action="@{${'/enrollments/expired'}}" method="GET">
+            <button class="btn btn-primary" type="submit">Expired Enrollments</button>
+        </form>
+        <form th:action="@{${'/enrollments/expiring'}}" method="GET" class="d-flex flex-row gap-1">
+            <label for="days">Days for expiring</label>
+            <input type="number" name="days"/>
+            <button class="btn btn-primary" type="submit">Expiring Enrollments</button>
+        </form>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <div th:if="${not #lists.isEmpty(enrollmentList)}">
+            <div th:text="'Total of '+${#lists.size(enrollmentList)} + ' registers.'" class="text-right"></div>
+        </div>
+        <thead>
+        <tr>
+            <th>Student id</th>
+            <th>Student name</th>
+            <th>Receipt date</th>
+            <th>Expiration date</th>
+            <th>Academic Term</th>
+            <th>Document</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="enrollment: ${enrollmentList}">
+            <td><a th:text="${enrollment.student.idStudent}"></a></td>
+            <td><a th:text="${enrollment.student.name}"></a></td>
+            <td><a th:text="${enrollment.receiptDate}"></a></td>
+            <td><a th:text="${enrollment.expirationDate}"></a></td>
+            <td><a th:text="${enrollment.academicTerm.code}"></a></td>
+            <td>
+                <form th:action="@{${'/students/'+enrollment.student.idStudent+'/enrollments/'+enrollment.idEnrollment+'/downloadPDF'}}" method="get">
+                    <button
+                            class="btn btn-primary btn-sm"
+                            type="submit">
+                        Download PDF
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

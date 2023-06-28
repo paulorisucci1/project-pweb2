@@ -80,6 +80,16 @@ public class StudentController {
         return modelAndView;
     }
 
+    @GetMapping("/without-enrollments")
+    public ModelAndView listAllWithoutEnrollments(ModelAndView modelAndView) {
+        modelAndView.setViewName("students/list");
+
+        final var studentList = studentService.listStudentsWithoutEnrollments();
+        modelAndView.addObject("studentList", studentList);
+
+        return modelAndView;
+    }
+
     @GetMapping("/{idStudent}")
     public ModelAndView getById(@PathVariable Integer idStudent, ModelAndView modelAndView) {
         modelAndView.setViewName("students/form");

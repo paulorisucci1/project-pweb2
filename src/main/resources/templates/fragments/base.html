@@ -21,6 +21,7 @@
       <a th:classappend="${menu == 'home'} ? 'active'" class="nav-item nav-link text-dark" th:href="@{/home}">Home</a>
       <a th:classappend="${menu == 'institution'} ? 'active'" class="nav-item nav-link text-dark" th:href="@{/institutions}">Institutions</a>
       <a th:classappend="${menu == 'student'} ? 'active'" class="nav-item nav-link text-dark" th:href="@{/students}">Students</a>
+      <a th:classappend="${menu == 'enrollment'} ? 'active'" class="nav-item nav-link text-dark" th:href="@{/enrollments}">Enrollments</a>
     </div>
     <div style="margin-right: 5px;">
       <form th:action="${leaveLink}">

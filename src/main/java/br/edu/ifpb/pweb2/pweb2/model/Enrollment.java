@@ -2,11 +2,12 @@ package br.edu.ifpb.pweb2.pweb2.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Objects;
 
@@ -26,8 +27,17 @@ public class Enrollment {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date receiptDate;
 
-    @Size(max = 255, message = "The note must have a maximum of 255 characters")
-    private String note;
+    @Column(
+            nullable = false
+    )
+    @NotNull(message = "The receipt date must be informed")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date expirationDate;
+
+    @Lob
+    private byte[] enrollmentDocument;
+
+    private String fileName;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Student student;
@@ -36,10 +46,27 @@ public class Enrollment {
     @NotNull(message = "The academic term must be provided. If there are no academic terms available, please register one for your institution")
     private AcademicTerm academicTerm;
 
+    public void setEnrollmentDocument(MultipartFile document) {
+        try {
+            this.enrollmentDocument = document.getBytes();
+            this.fileName = document.getOriginalFilename();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void update(Enrollment enrollment) {
         this.receiptDate = enrollment.getReceiptDate();
-        this.note = enrollment.getNote();
         this.academicTerm = enrollment.getAcademicTerm();
+        this.enrollmentDocument = enrollment.getEnrollmentDocument();
+        this.fileName = enrollment.getFileName();
+    }
+
+    public boolean isCurrentStudentEnrollment() {
+        if(Objects.nonNull(this.student)) {
+            return Objects.equals(this.student.getCurrentEnrollment(), this);
+        }
+        return false;
     }
 
     @Override
@@ -47,7 +74,7 @@ public class Enrollment {
         return "Enrollment{" +
                 "idEnrollment=" + idEnrollment +
                 ", receiptDate=" + receiptDate +
-                ", note='" + note + '\'' +
+                ", document='" + enrollmentDocument + '\'' +
                 '}';
     }
 }

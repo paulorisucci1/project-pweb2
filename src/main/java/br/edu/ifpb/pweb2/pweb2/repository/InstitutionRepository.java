@@ -6,4 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface InstitutionRepository extends JpaRepository<Institution, Integer> {
 
     boolean existsByAcronymAndIdInstitutionNot(String acronym, Integer idInstitution);
+
+    boolean existsByAcronym(String acronym);
+
 }

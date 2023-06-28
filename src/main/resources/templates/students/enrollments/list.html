@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:insert="~{layout/layout}"
-      th:with="title='Enrollment list', leaveLink=@{${'/students/'+idStudent}}">
+      th:with="title='Enrollment list', leaveLink=@{${'/students'}}">
 <body>
 <header class="text-center">
   <h1>Enrollments</h1>
@@ -18,16 +18,36 @@
     <thead>
     <tr>
       <th>Receipt date</th>
-      <th>Note</th>
+      <th>Expiration date</th>
       <th>Academic Term</th>
+      <th>Document</th>
+      <th>Current Enrollment</th>
       <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="enrollment: ${enrollmentList}">
       <td><a th:text="${enrollment.receiptDate}"></a></td>
-      <td><a th:text="${enrollment.note}"></a></td>
+      <td><a th:text="${enrollment.expirationDate}"></a></td>
       <td><a th:text="${enrollment.academicTerm.code}"></a></td>
+      <td>
+        <form th:action="@{${'/students/'+idStudent+'/enrollments/'+enrollment.idEnrollment+'/downloadPDF'}}" method="get">
+          <button
+                  class="btn btn-primary btn-sm"
+                  type="submit">
+            Download PDF
+          </button>
+        </form>
+      </td>
+      <td>
+        <span th:text="${enrollment.currentStudentEnrollment ? 'Yes' : 'No'}"
+              class="fw-bold"
+              th:classappend="${enrollment.currentStudentEnrollment ?
+         'text-success': 'text-danger'}"></span>
+        <form th:action="@{${'/students/'+idStudent+'/enrollments/'+enrollment.idEnrollment+'/make-current'}}" method="post">
+          <button type="submit" class="btn btn-primary btn-sm">Make Current</button>
+        </form>
+      </td>
       <td>
         <form th:action="@{${'/students/'+idStudent+'/enrollments/'+enrollment.idEnrollment}}" th:method="GET">
           <button type="submit" class="btn btn-primary btn-sm">Update</button>

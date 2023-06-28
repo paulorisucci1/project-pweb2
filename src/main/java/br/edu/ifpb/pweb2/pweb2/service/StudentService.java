@@ -19,13 +19,19 @@ public class StudentService {
 
     public Student create(Student newStudent) {
 
-        verifyIfStudentRegistrationAlreadyExist(newStudent);
+        verifyIfStudentRegistrationAlreadyExistForRegister(newStudent);
 
         return saveStudent(newStudent);
     }
 
+    @Transactional
     public List<Student> listStudents() {
         return studentRepository.findAll();
+    }
+
+    @Transactional
+    public List<Student> listStudentsWithoutEnrollments() {
+        return studentRepository.findAllWithoutEnrollment();
     }
 
     public Student update(Student updatedStudent) {
@@ -33,25 +39,33 @@ public class StudentService {
 
         foundStudent.update(updatedStudent);
 
-        verifyIfStudentRegistrationAlreadyExist(foundStudent);
+        verifyIfStudentRegistrationAlreadyExistForUpdate(foundStudent);
 
         return saveStudent(foundStudent);
     }
 
+    @Transactional
     public Student searchById(Integer id) {
         return studentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Student not found"));
     }
 
+    @Transactional
     public void delete(Integer id) {
         final var student = searchById(id);
         student.removeAllEnrollments();
         studentRepository.delete(student);
     }
 
-    void verifyIfStudentRegistrationAlreadyExist(Student student) {
-        if(studentRepository.existsByNameAndIdStudentNot(student.getName(), student.getIdStudent())) {
-            throw new EntityAlreadyExistException("The student already exist.");
+    void verifyIfStudentRegistrationAlreadyExistForRegister(Student student) {
+        if(studentRepository.existsByRegistration(student.getRegistration())) {
+            throw new EntityAlreadyExistException("The student registration already exist.");
+        }
+    }
+
+    void verifyIfStudentRegistrationAlreadyExistForUpdate(Student student) {
+        if(studentRepository.existsByRegistrationAndIdStudentNot(student.getRegistration(), student.getIdStudent())) {
+            throw new EntityAlreadyExistException("The student registration already exist.");
         }
     }
 
@@ -66,6 +80,12 @@ public class StudentService {
     public void removeEnrollmentFromStudent(Enrollment enrollment) {
         final var student = searchById(enrollment.getStudent().getIdStudent());
         student.removeEnrollment(enrollment);
+        saveStudent(student);
+    }
+
+    public void changeStudentCurrentEnrollment(Integer idStudent, Enrollment newCurrentEnrollment) {
+        final var student = searchById(idStudent);
+        student.setCurrentEnrollment(newCurrentEnrollment);
         saveStudent(student);
     }
 

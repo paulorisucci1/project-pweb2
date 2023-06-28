@@ -15,5 +15,7 @@ public class Paths {
 
     public static final String STUDENTS_ID = STUDENTS+"/{idStudent}";
 
-    public static final String ENROLLMENTS = STUDENTS_ID+"/enrollments";
+    public static final String STUDENT_ENROLLMENTS = STUDENTS_ID+"/enrollments";
+
+    public static final String ENROLLMENTS = "/enrollments";
 }

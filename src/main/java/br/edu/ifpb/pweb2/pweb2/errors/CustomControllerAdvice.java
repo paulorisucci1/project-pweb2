@@ -1,19 +1,39 @@
 package br.edu.ifpb.pweb2.pweb2.errors;
 
+import br.edu.ifpb.pweb2.pweb2.exceptions.EntityAlreadyExistException;
 import br.edu.ifpb.pweb2.pweb2.exceptions.EntityNotFoundException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class CustomControllerAdvice {
 
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String maxUploadSize;
+
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException entityNotFoundException) {
+    public ModelAndView handleEntityNotFoundException(EntityNotFoundException entityNotFoundException) {
+        return makeStandardExceptionResponse(entityNotFoundException);
+    }
 
-        final var status = HttpStatus.NOT_FOUND;
+    @ExceptionHandler(EntityAlreadyExistException.class)
+    public ModelAndView handleEntityAlreadyExistException(EntityAlreadyExistException entityAlreadyExistException) {
+        return makeStandardExceptionResponse(entityAlreadyExistException);
+    }
 
-        return new ResponseEntity<>(new ErrorResponse(status, entityNotFoundException.getMessage()), status);
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ModelAndView handleMaxSizeException() {
+        ModelAndView modelAndView = new ModelAndView("exception");
+        modelAndView.addObject("errorMessage", String.format("The file exceeds maximum size (%s)!", maxUploadSize));
+        return modelAndView;
+    }
+
+    private ModelAndView makeStandardExceptionResponse(Exception exception) {
+        final var modelAndView = new ModelAndView("exception");
+        modelAndView.addObject("errorMessage", exception.getMessage());
+        return modelAndView;
     }
 }

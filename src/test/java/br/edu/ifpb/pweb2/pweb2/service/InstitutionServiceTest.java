@@ -84,7 +84,7 @@ public class InstitutionServiceTest {
 
         when(institutionRepository.existsByAcronymAndIdInstitutionNot(any(), any())).thenReturn(true);
 
-        assertThatThrownBy(() -> institutionService.verifyIfInstitutionAcronymAlreadyExist(existentInstitution))
+        assertThatThrownBy(() -> institutionService.verifyIfInstitutionAcronymAlreadyExistForUpdate(existentInstitution))
                 .isInstanceOf(EntityAlreadyExistException.class);
     }
 

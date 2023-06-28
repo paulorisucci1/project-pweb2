@@ -25,8 +25,8 @@ public class AcademicTerm {
     private Integer year;
 
     @Column(nullable = false)
-    @NotBlank(message = "The code must be informed")
-    private String code;
+    @NotNull(message = "The semester must be informed")
+    private Integer semester;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
@@ -42,10 +42,14 @@ public class AcademicTerm {
     private Institution institution;
 
     public void update(AcademicTerm updatedAcademicTerm) {
-        this.code = updatedAcademicTerm.getCode();
+        this.semester = updatedAcademicTerm.getSemester();
         this.year = updatedAcademicTerm.getYear();
         this.startDate = updatedAcademicTerm.getStartDate();
         this.endDate = updatedAcademicTerm.getEndDate();
+    }
+
+    public String getCode() {
+        return this.year + "." + this.semester;
     }
 
     @Override

@@ -17,8 +17,8 @@
     </div>
     <thead>
     <tr>
-      <th>Code</th>
       <th>Year</th>
+      <th>Semester</th>
       <th>Start Date</th>
       <th>End Date</th>
       <th></th>
@@ -26,16 +26,16 @@
     </thead>
     <tbody>
     <tr th:each="academicTerm: ${academicTermList}">
-      <td><a th:text="${academicTerm.code}"></a></td>
       <td><a th:text="${academicTerm.year}"></a></td>
+      <td><a th:text="${academicTerm.semester}"></a></td>
       <td><a th:text="${academicTerm.startDate}"></a></td>
       <td><a th:text="${academicTerm.endDate}"></a></td>
       <td>
         <form th:action="@{${'/institutions/'+idInstitution+'/academic_terms/'+academicTerm.idAcademicTerm}}" th:method="GET">
-          <button type="submit" class="btn btn-rimary btn-sm">Update</button>
+          <button type="submit" class="btn btn-primary btn-sm">Update</button>
         </form>
         <form th:action="@{${'/institutions/'+idInstitution+'/academic_terms/'+academicTerm.idAcademicTerm}}" th:method="delete">
-          <button type="submit" class="btn btn-rimary btn-sm">Exclude</button>
+          <button type="submit" class="btn btn-primary btn-sm">Exclude</button>
         </form>
       </td>
     </tr>

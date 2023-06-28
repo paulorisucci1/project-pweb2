@@ -34,21 +34,21 @@
       <p th:if="${#fields.hasErrors('institution')}" th:errorclass="error" th:errors="*{institution}" class="alert alert-danger" />
     </div>
 
-    <div class="form-group mx-sm-3 mb-2" th:if="*{idStudent != null}">
-      <label for="enrollment">Enrollment</label>
+<!--    <div class="form-group mx-sm-3 mb-2" th:if="*{idStudent != null}">-->
+<!--      <label for="enrollment">Enrollment</label>-->
 
-      <select th:field="*{currentEnrollment.idEnrollment}" class="form-select mb-2">
-        <option th:each="enrollment: *{enrollments}" th:value="${enrollment.idEnrollment}" th:text="${enrollment.receiptDate}" />
-      </select>
+<!--      <select th:field="*{currentEnrollment.idEnrollment}" class="form-select mb-2">-->
+<!--        <option th:each="enrollment: *{enrollments}" th:value="${enrollment.idEnrollment}" th:text="${enrollment.receiptDate}" />-->
+<!--      </select>-->
 
-      <a th:href="@{*{'/students/'+idStudent+'/enrollments/form'}}">
-        <input type="button" value="Add" class="btn btn-secondary"/>
-      </a>
+<!--      <a th:href="@{*{'/students/'+idStudent+'/enrollments/form'}}">-->
+<!--        <input type="button" value="Add" class="btn btn-secondary"/>-->
+<!--      </a>-->
 
-      <a th:href="@{*{'/students/'+idStudent+'/enrollments'}}">
-        <input type="button" value="List" class="btn btn-secondary"/>
-      </a>
-    </div>
+<!--      <a th:href="@{*{'/students/'+idStudent+'/enrollments'}}">-->
+<!--        <input type="button" value="List" class="btn btn-secondary"/>-->
+<!--      </a>-->
+<!--    </div>-->
 
     <div class="form-group mx-sm-3 mb-2 submit-form">
       <input type="submit" value="Save" class="btn btn-primary"/>

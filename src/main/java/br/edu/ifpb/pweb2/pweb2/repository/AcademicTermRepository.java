@@ -10,4 +10,9 @@ public interface AcademicTermRepository extends JpaRepository<AcademicTerm, Inte
 
     List<AcademicTerm> findAllByInstitution(Institution institution);
 
+    boolean existsByYearAndSemesterAndInstitution(Integer year, Integer semester, Institution institution);
+
+    boolean existsByYearAndSemesterAndInstitutionAndIdAcademicTermNot(Integer year, Integer semester,
+                                                                      Institution institution, Integer idAcademicTerm);
+
 }

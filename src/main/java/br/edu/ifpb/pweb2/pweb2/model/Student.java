@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class Student {
     private List<Enrollment> enrollments;
 
     @OneToOne(cascade = CascadeType.REMOVE)
+    @ToString.Exclude
     private Enrollment currentEnrollment;
 
     public void update(Student updatedStudent) {

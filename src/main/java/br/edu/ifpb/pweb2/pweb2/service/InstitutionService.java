@@ -19,7 +19,7 @@ public class InstitutionService {
 
     public Institution create(Institution newInstitution) {
 
-        verifyIfInstitutionAcronymAlreadyExist(newInstitution);
+        verifyIfInstitutionAcronymAlreadyExistForRegister(newInstitution);
 
         return saveInstitution(newInstitution);
     }
@@ -33,7 +33,7 @@ public class InstitutionService {
 
         foundInstitution.update(updatedInstitution);
 
-        verifyIfInstitutionAcronymAlreadyExist(foundInstitution);
+        verifyIfInstitutionAcronymAlreadyExistForUpdate(foundInstitution);
 
         return saveInstitution(foundInstitution);
     }
@@ -60,9 +60,15 @@ public class InstitutionService {
         institution.removeAcademicTerm(academicTerm);
     }
 
-    void verifyIfInstitutionAcronymAlreadyExist(Institution institution) {
+    void verifyIfInstitutionAcronymAlreadyExistForRegister(Institution institution) {
+        if(institutionRepository.existsByAcronym(institution.getAcronym())) {
+            throw new EntityAlreadyExistException("The institution acronym already exist.");
+        }
+    }
+
+    void verifyIfInstitutionAcronymAlreadyExistForUpdate(Institution institution) {
         if(institutionRepository.existsByAcronymAndIdInstitutionNot(institution.getAcronym(), institution.getIdInstitution())) {
-            throw new EntityAlreadyExistException("The institution already exist.");
+            throw new EntityAlreadyExistException("The institution acronym already exist.");
         }
     }
 

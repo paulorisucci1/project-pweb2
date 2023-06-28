@@ -18,13 +18,17 @@ public class AcademicTermService {
 
     private InstitutionService institutionService;
 
+    @Transactional
     public AcademicTerm createAcademicTermForInstitution(AcademicTerm academicTerm, Integer idInstitution) {
         final var createdAcademicTerm = saveAcademicTerm(academicTerm);
         institutionService.addAcademicTermOntoInstitution(createdAcademicTerm, idInstitution);
+        verifyIfAcademicTermExist(academicTerm);
         return createdAcademicTerm;
     }
 
     public AcademicTerm update(AcademicTerm updatedAcademicTerm) {
+        verifyIfAcademicTermExist(updatedAcademicTerm);
+
         final var foundAcademicTerm = searchById(updatedAcademicTerm.getIdAcademicTerm());
 
         foundAcademicTerm.update(updatedAcademicTerm);
@@ -47,6 +51,13 @@ public class AcademicTermService {
         final var removedAcademicTerm = searchById(id);
         institutionService.removeAcademicTermFromInstitution(removedAcademicTerm);
         academicTermRepository.delete(removedAcademicTerm);
+    }
+
+    private void verifyIfAcademicTermExist(AcademicTerm academicTerm) {
+        if(academicTermRepository.existsByYearAndSemesterAndInstitutionAndIdAcademicTermNot(academicTerm.getYear(),
+                academicTerm.getSemester(), academicTerm.getInstitution(), academicTerm.getIdAcademicTerm())) {
+            throw new EntityAlreadyExistException("The academic term year and semester already exist.");
+        }
     }
 
     private AcademicTerm saveAcademicTerm(AcademicTerm academicTerm) {
